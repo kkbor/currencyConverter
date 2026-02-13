@@ -1,24 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LastTable from "../pages/archive.tsx";
 import FavouriteTable from "../pages/faforite.tsx"
 import { CurrencySelect } from "../components/currencyselect/currencySelect.tsx";
 import { useCurrencyConverter } from "../hooks/useCurrencyConverter";
+import { saveCurrency } from "../hooks/savecurrency.ts";
+
 
 export const HomePage = () =>{
+  //tymczasowa pamięć ram aplikacji, po odświerzeniu znika
     const [amount, setAmount] = useState<number>(100);
-    const[currency, setCurrency] = useState<string>("PLN");
+    const[currency, setCurrency] = useState<string>("PLN"); 
     const[currencyconverted, setCurrencyConverted] = useState<string>("EUR");
     const [activeTab, setActiveTab] = useState<"last" | "favourite">("last");
-    
+    const [refreshKey, setRefreshKey] = useState(0);
     const { result, loading, error, convert } = useCurrencyConverter();
+    //Funkcja obsługi po zaakceptowaniu
     const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
       e.preventDefault();
       convert(amount, currency, currencyconverted);
     };
+   useEffect(() => {
+    if (result !== null) {
+    saveCurrency(amount,currency,currencyconverted,result.toFixed(2));
+    setRefreshKey(prev => prev + 1);
+  }
+}, [result]);
     return(
         <>
         {result !== null && (
-        <div className="result">
+        <div className="result" >
           {amount} {currency} to w przeliczeniu
           <br />
           <strong>{result.toFixed(2)} {currencyconverted}</strong>
@@ -76,7 +86,7 @@ export const HomePage = () =>{
         </div>
 
         <div className="table-content">
-          {activeTab === "last" && <LastTable />}
+          {activeTab === "last" && <LastTable key={refreshKey}/>}
           {activeTab === "favourite" && <FavouriteTable />}
         </div>
       </div>
