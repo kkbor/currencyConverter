@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import LastTable from "../pages/archive.tsx";
+import {HistoryWrapper} from "../pages/historyWrapper.tsx";
+
 import FavouriteTable from "../pages/faforite.tsx"
 import { CurrencySelect } from "../components/currencyselect/currencySelect.tsx";
 import { useCurrencyConverter } from "../hooks/useCurrencyConverter";
@@ -86,7 +87,8 @@ export const HomePage = () =>{
         </div>
 
         <div className="table-content">
-          {activeTab === "last" && <LastTable key={refreshKey}/>}
+          {activeTab === "last" && <HistoryWrapper key={refreshKey} />}
+
           {activeTab === "favourite" && <FavouriteTable />}
         </div>
       </div>

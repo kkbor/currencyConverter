@@ -16,25 +16,27 @@ const FavouriteTable = () => {
   if (currencies.length === 0)
     return <div>Brak walut do wyświetlenia</div>;
 
-    return (
-    <div>
+     return (
+    <div className="favouriteContainer">
       {currencies.map((c: CurrencyOption) => {
-        const active = favorites[c.value] || false; // czy gwiazdka jest aktywna
+        const active = favorites[c.value] || false;
+
         return (
-          <div
-            key={c.value}
-            style={{ display: "flex", alignItems: "center", gap: 8, padding: 4 }}
-          >
-            {c.flag && <img src={c.flag} alt="" width={20} height={14} />}
-            <span>{c.label}</span>
-            <strong style={{ marginLeft: "auto" }}>{c.value}</strong>
-            <button
-              onClick={() => toggleStar(c.value)}
-              className={`star-button ${active ? "active" : ""}`}
-              aria-label={active ? "Ulubione" : "Nieulubione"}
-            >
-              ★
-            </button>
+          <div key={c.value} className="favouriteRow">
+            <div className="favouriteLeft">
+              {c.flag && <img src={c.flag} alt="" width={20} height={14} />}
+              <span>{c.label}</span>
+            </div>
+
+            <div className="favouriteRight">
+              <strong>{c.value}</strong>
+              <button
+                onClick={() => toggleStar(c.value)}
+                className={`star-button ${active ? "active" : ""}`}
+              >
+                ★
+              </button>
+            </div>
           </div>
         );
       })}

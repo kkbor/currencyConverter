@@ -184,7 +184,7 @@ html, body {
 
 
 .star-button.active {
-  color: gold;           /* kolor po kliknięciu */
+  color: gold;          
 }
 .result{
   max-width: 700px;
@@ -221,4 +221,62 @@ html, body {
 }
 .customTable td:last-child {
   border-radius: 0 15px 15px 0;
+}
+.historyWrapper {
+  position: relative;
+}
+
+.archiveOverlay {
+  position: fixed;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  background: white;
+
+  max-height: 0;
+  overflow: hidden;
+
+  transition: max-height 0.5s ease;
+  z-index: 999;
+
+  border-radius: 20px;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+}
+
+.archiveOverlay.active {
+  max-height: 80vh; /* maksymalna wysokość rozwinięcia */
+}
+
+.archiveContent {
+  padding-bottom: 40px;
+}
+.favouriteContainer {
+  width: 90%;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* odstęp między wierszami */
+}
+
+.favouriteRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px;
+  background-color: #EDE8E0;
+
+  border-radius: 15px;
+}
+
+.favouriteLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.favouriteRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

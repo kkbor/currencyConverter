@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
-import { getCurrencyHistory } from "../hooks/getCurrencyHistory";
-const LastTable = () => {
+import { getCurrencyHistory } from "../../hooks/getCurrencyHistory";
+
+interface Props {
+  onShowArchive: () => void;
+}
+const LastTable = ({ onShowArchive }: Props) => {
   const [history, setHistory] = useState<any[]>([]);
 
     const fetchHistory = () => {
@@ -40,7 +44,9 @@ const LastTable = () => {
               ))}
             </tbody>
           </table>
-             <button className="button-home">Historia</button>
+          <button className="button-home" onClick={onShowArchive}>
+            Historia
+          </button>
           
         </>
       ) : (
