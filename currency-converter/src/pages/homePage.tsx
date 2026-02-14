@@ -1,20 +1,25 @@
 import { useState, useEffect } from "react";
-import {HistoryWrapper} from "../pages/historyWrapper.tsx";
+import {HistoryWrapper} from "../components/currencyHistory/historyWrapper.tsx";
 
-import FavouriteTable from "../pages/faforite.tsx"
+import FavouriteTable from "../components/currencyFavorite/favorite.tsx"
 import { CurrencySelect } from "../components/currencyselect/currencySelect.tsx";
 import { useCurrencyConverter } from "../hooks/useCurrencyConverter";
-import { saveCurrency } from "../hooks/savecurrency.ts";
+import { saveCurrency } from "../utils/savecurrency.ts";
 
 
 export const HomePage = () =>{
   //tymczasowa pamięć ram aplikacji, po odświerzeniu znika
     const [amount, setAmount] = useState<number>(100);
-    const[currency, setCurrency] = useState<string>("PLN"); 
-    const[currencyconverted, setCurrencyConverted] = useState<string>("EUR");
+    const[currency, setCurrency] = useState<string>(""); 
+    const[currencyconverted, setCurrencyConverted] = useState<string>("");
     const [activeTab, setActiveTab] = useState<"last" | "favourite">("last");
     const [refreshKey, setRefreshKey] = useState(0);
     const { result, loading, error, convert } = useCurrencyConverter();
+    const [favoritesRefreshKey, setFavoritesRefreshKey] = useState(0);
+
+    const handleFavoritesChange = () => {
+      setFavoritesRefreshKey(prev => prev + 1);
+    };
     //Funkcja obsługi po zaakceptowaniu
     const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -50,7 +55,7 @@ export const HomePage = () =>{
                         
                         <div className="divider"></div>
                          <div className="country-select">
-                            <CurrencySelect value={currency} onChange={setCurrency} />
+                            <CurrencySelect value={currency} onChange={setCurrency} refreshKey={favoritesRefreshKey} />
                         </div>
                         
                     </div>
@@ -59,9 +64,7 @@ export const HomePage = () =>{
             <div className="form-group">
                 <label className="form-label">Przewalutować na</label>
                 <div className="input-group single">
-                   <CurrencySelect
-                        value={currencyconverted}
-                        onChange={setCurrencyConverted}/>
+                   <CurrencySelect value={currencyconverted} onChange={setCurrencyConverted} refreshKey={favoritesRefreshKey} />
                 </div>
             </div>
             <button className="button-home" disabled={loading}>
@@ -89,7 +92,7 @@ export const HomePage = () =>{
         <div className="table-content">
           {activeTab === "last" && <HistoryWrapper key={refreshKey} />}
 
-          {activeTab === "favourite" && <FavouriteTable />}
+          {activeTab === "favourite" && (<FavouriteTable onFavoriteChange={handleFavoritesChange} />)}
         </div>
       </div>
     </>

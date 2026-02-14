@@ -1,17 +1,16 @@
-import { cachedCurrencies } from "../components/currencyselect/currencySelect";
-import type { CurrencyOption } from "../types/currency";
-import { useState } from "react";
+import { cachedCurrencies } from "../currencyselect/currencySelect";
+import type { CurrencyOption } from "../../types/currency";
+import { useFavorites } from "../../hooks/useFavorite";
 
-const FavouriteTable = () => {
+type FavouriteTableProps = {
+  onFavoriteChange?: () => void;
+};
+
+const FavouriteTable = ({ onFavoriteChange }: FavouriteTableProps) => {
   const currencies: CurrencyOption[] = cachedCurrencies || [];
-   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
-
-  const toggleStar = (code: string) => {
-    setFavorites((prev) => ({
-      ...prev,
-      [code]: !prev[code],
-    }));
-  };
+  const { favorites, toggleFavorite } = useFavorites();
+  
+  
 
   if (currencies.length === 0)
     return <div>Brak walut do wyświetlenia</div>;
@@ -31,7 +30,10 @@ const FavouriteTable = () => {
             <div className="favouriteRight">
               <strong>{c.value}</strong>
               <button
-                onClick={() => toggleStar(c.value)}
+                 onClick={() => {
+                  toggleFavorite(c);
+                  if (onFavoriteChange) onFavoriteChange();
+                }}
                 className={`star-button ${active ? "active" : ""}`}
               >
                 ★

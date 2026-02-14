@@ -1,6 +1,6 @@
 import { useState } from "react";
-import LastTable from "../components/currencyHistory/latest";
-import ArchiveTable from "../components/currencyHistory/archive";
+import LastTable from "./latest";
+import ArchiveTable from "./archive";
 
 export const HistoryWrapper = () =>{
     const [showArchive, setShowArchive] = useState(false);

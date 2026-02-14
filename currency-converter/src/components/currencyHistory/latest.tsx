@@ -1,24 +1,14 @@
-import { useState, useEffect } from "react";
-import { getCurrencyHistory } from "../../hooks/getCurrencyHistory";
+import { useCurrencyHistory } from "../../hooks/useCurrencyHistory";
 
 interface Props {
   onShowArchive: () => void;
 }
 const LastTable = ({ onShowArchive }: Props) => {
-  const [history, setHistory] = useState<any[]>([]);
-
-    const fetchHistory = () => {
-    const data = getCurrencyHistory();
-    const lastThree = data.slice(-3).reverse(); 
-    setHistory(lastThree);
-  };
-  useEffect(() => {
-    fetchHistory();
-  }, []);
-
-    return (
+  const {history} = useCurrencyHistory();
+  const lastThree = [...history].slice(-3).reverse();
+  return (
     <div className="tableContainer">
-      {history.length > 0 ? (
+      {lastThree.length > 0 ? (
         <>
           <table className="customTable ">
             <thead>
@@ -32,7 +22,7 @@ const LastTable = ({ onShowArchive }: Props) => {
               </tr>
             </thead>
             <tbody>
-              {history.map((item, index) => (
+              {lastThree.map((item, index) => (
                 <tr key={index}>
                   <td>{item.amount}</td>
                   <td>{item.currency}</td>
