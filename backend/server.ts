@@ -1,21 +1,34 @@
 import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
+import path from "path";
 import dotenv from "dotenv";
+import { fileURLToPath } from "url";
 
+/**
+ * Główny serwer Express.js (Proxy Server).
+ * Zapewnia bezpieczeństwo kluczy API, obsługuje CORS oraz serwuje pliki statyczne frontendu.
+ */
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 const API_KEY = process.env.EXCHANGE_RATES_KEY;
 
 if (!API_KEY) {
-  throw new Error("Nie ustawiono klucza API w .env");
+    throw new Error("Nie ustawiono klucza API w .env");
 }
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors());
+app.use(express.json());
 
-// --- Typy odpowiedzi API ---
+const distPath = path.resolve(__dirname, "../../frontend/dist");
+
+// --- SERWOWANIE PLIKÓW STATYCZNYCH ---
+app.use(express.static(distPath));
 interface SymbolsResponse {
   success?: boolean;
   symbols?: Record<string, string>;
@@ -29,12 +42,8 @@ interface RatesResponse {
   rates?: Record<string, number>;
   error?: { code: string; message: string };
 }
-
-// --- Cache w pamięci ---
 let cachedSymbols: Record<string, string> | null = null;
-let cachedRates: Record<string, RatesResponse> = {}; // cache po base+symbols
-
-// --- Endpoint pobierania symboli ---
+// --- API ENDPOINTS ---
 app.get("/api/symbols", async (req, res) => {
   try {
     if (cachedSymbols) {
@@ -97,7 +106,26 @@ app.get("/api/rates", async (req, res) => {
   }
 });
 
-// --- Start serwera ---
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(distPath, "index.html"));
+});
+
+
+app.get("*", (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+        return next(); 
+    }
+    
+    const indexPath = path.join(distPath, "index.html");
+    res.sendFile(indexPath, (err) => {
+        if (err) {
+            res.status(404).send("Błąd: Nie znaleziono pliku index.html. Sprawdź czy folder dist istnieje.");
+        }
+    });
+});
+
 app.listen(PORT, () => {
-  console.log(`Backend proxy działa na http://localhost:${PORT}`);
+    console.log(`--- SERWER URUCHOMIONY ---`);
+    console.log(`Adres: http://localhost:${PORT}`);
 });

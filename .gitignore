@@ -1,0 +1,42 @@
+# --- Dependencies ---
+# Ignoruje biblioteki we wszystkich folderach
+node_modules/
+
+# --- Build Outputs ---
+# Ignoruje skompilowane pliki frontendu i backendu
+dist/
+dist-ssr/
+build/
+bin/
+obj/
+
+# --- Environment Variables (SECURITY) ---
+# Nigdy nie wysyłaj kluczy API na GitHub!
+.env
+.env.local
+.env.*.local
+
+# --- Logs ---
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# --- Editor & OS Files ---
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# --- Temporary files ---
+.cache/
+.tmp/
