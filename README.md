@@ -120,11 +120,11 @@ Installation and Running
 
 
 Possible Improvements
--Add TTL-based rate cache
--Add unit tests
--Add swap currency button
--Add Docker support
--Deploy to Render / Railway
+- Add TTL-based rate cache
+- Add unit tests
+- Add swap currency button
+- Add Docker support
+- Deploy to Render / Railway
 
 Author
 Katarzyna Borysiak
