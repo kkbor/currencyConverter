@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --watch server.ts --exec ts-node server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js"
-  },
+  "dev": "nodemon --watch server.ts --exec ts-node server.ts",
+  "build": "npx tsc", 
+  "start": "node dist/server.js"
+},
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.2.4",

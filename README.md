@@ -114,6 +114,7 @@ Installation and Running
 
     To build and run the production version:
         From the main project folder:
+            npm install
             npm run build
             npm run start
 
